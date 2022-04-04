@@ -1,0 +1,31 @@
+{
+  "name": "smartmarket",
+  "version": "1.0.0",
+  "description": "A web application to make paper trading easy!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Suhas44/SmartMarket.git"
+  },
+  "entrypoint": "server.js",
+  "keywords": [
+    "papertrading",
+    "stocks",
+    "algo",
+    "algotrading",
+    "daytrading"
+  ],
+  "author": "Suhas Guddeti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Suhas44/SmartMarket/issues"
+  },
+  "homepage": "https://github.com/Suhas44/SmartMarket#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
