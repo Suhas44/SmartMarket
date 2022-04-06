@@ -27,8 +27,8 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: username.value,
-            password: password.value,
+            username: username,
+            password: password,
           }),
         })
           .then((response) => response.json())
@@ -37,5 +37,7 @@
           });
       }
     </script>
+    <button>
+      <a href="list.html">Wanna See Other People's Passwords??</a>
   </body>
 </html>
