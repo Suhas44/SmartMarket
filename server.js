@@ -6,10 +6,15 @@ const app = express();
 app.use('/', express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.json());
 
-app.post('/api/register', async(req, res) => {
+app.post('/index', async(req, res) => {
     console.log(req.body)
     writeToAtlas(req.body);
     res.json({ status: 'ok' })
+});
+
+app.post('/theusers', async(req, res) => {
+  console.log(req)
+  res.json({ status: 'ok' })
 });
 
 app.listen(9999, () => {
