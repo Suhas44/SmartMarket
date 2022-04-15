@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { read } = require('fs');
-const res = require('express/lib/response');
 
 const app = express();
 app.use('/', express.static(path.join(__dirname, 'static')));
@@ -40,18 +38,12 @@ async function writeToAtlas(obj) {
     });
 }
 
-async function findOneListingByName(collection, nameOfListing) {
-    const result = collection.find({"username": nameOfListing}); 
-    return result;
-}
-
-
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://MongoTest:MongoTester1@cluster0.5oqhq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-MongoClient.connect(url, function(err, db) {
+MongoClient.connect(url, async function(err, db) {
   var dbo = db.db("Users");
-  var coll = dbo.collection("List");
-  findOneListingByName(coll, "Suhas").then(result => {
-    console.log(result);
-  });
+  c = dbo.collection("List");
+  r = await c.find({"username" : "Suhas"}).toArray();
+  console.log(r[0]);
 });
+
