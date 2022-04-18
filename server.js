@@ -6,7 +6,8 @@ const app = express();
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://MongoTest:MongoTester1@cluster0.5oqhq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-app.use('/', express.static(path.join(__dirname, 'static')));
+app.use(express.static('public'));
+app.use('/', express.static(path.join(__dirname, 'public/pages')));
 app.use(bodyParser.json());
 
 // Sending registering users to MongoDB
@@ -23,6 +24,10 @@ app.get('/list', async(req, res) => {
    }).catch(err => {
      console.log(err);
    });
+});
+
+// Authenticating a User from Login
+app.get('/auth', async(req, res) => {
 });
 
 app.listen(9999, () => {
