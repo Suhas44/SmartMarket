@@ -28,6 +28,12 @@ app.get('/list', async(req, res) => {
 
 // Authenticating a User from Login
 app.get('/auth', async(req, res) => {
+  var user = req.body;
+  if (authenticateUser(user.username, user.password)) {
+    console.log("User authenticated");
+  } else {
+    console.log("User not authenticated");
+  }
 });
 
 app.listen(9999, () => {
@@ -54,7 +60,6 @@ async function readAtlasUser(username) {
   const dbo = db.db("Users");
   const c = dbo.collection("List");
   const r = await c.find({"username" : username}).toArray();
-  console.log(r);
   return r;
 }
 
@@ -65,3 +70,19 @@ async function readAtlasAll() {
   const r = await c.find({}).toArray();
   return r;
 }
+
+
+async function authenticateUser(username, password) {
+  var authenticated = false;
+  readAtlasUser(username).then(r => {
+    if (r[0].password == password) {
+      authenticated = true;
+    } else {
+      authenticated = false;
+    }
+  }
+  ).catch(err => {
+    console.log(err);
+  });
+  return authenticated;
+} 

@@ -24,7 +24,6 @@ async function registerUser(event) {
 }
 
 //authentication
-
 const login = document.getElementById("login-form");
 login.addEventListener("submit", authenticate);
 
