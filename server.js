@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { read } = require('fs');
 const app = express();
 
 var MongoClient = require('mongodb').MongoClient;
@@ -12,19 +11,19 @@ app.use(bodyParser.json());
 
 // Sending registering users to MongoDB
 app.post('/index', async(req, res) => {
-    console.log(req.body)
+    console.log(req.body);
     writeToAtlas(req.body);
-    res.json({ status: 'ok' })
+    res.json({ status: 'ok' });
 });
 
-/*
-*** This is an example of posting data, I will keep this here for reference. The corresponding FETCH command is in list.html***
-app.post('/theusers', async(req, res) => {
-  res.json({ status: 'ok' })
-  console.log("the thing: " + req.body.username);
-  readAtlas("username", req.body.username);
+// Loading users from MongoDB
+app.get('/list', async(req, res) => {
+  readAtlasAll().then(r => {
+    res.json(JSON.stringify(r));
+   }).catch(err => {
+     console.log(err);
+   });
 });
-*/
 
 app.listen(9999, () => {
   console.log('Server up at port 9999');
@@ -45,12 +44,13 @@ async function writeToAtlas(obj) {
     });
 }
 
-function readAtlas(username, user) {
-  MongoClient.connect(url, async function(err, db) {
-    var dbo = db.db("Users");
-    c = dbo.collection("List");
-    r = await c.find({username:user}).toArray();
-  });
+async function readAtlasUser(username) {
+  const db = await MongoClient.connect(url);
+  const dbo = db.db("Users");
+  const c = dbo.collection("List");
+  const r = await c.find({"username" : username}).toArray();
+  console.log(r);
+  return r;
 }
 
 async function readAtlasAll() {
@@ -58,12 +58,5 @@ async function readAtlasAll() {
   const dbo = db.db("Users");
   const c = dbo.collection("List");
   const r = await c.find({}).toArray();
-  console.log(r);
   return r;
 }
-
-readAtlasAll().then(r => {
- console.log(r);
-}).catch(err => {
-  console.log(err);
-});

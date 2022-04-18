@@ -10,31 +10,24 @@
     <h3>This is why you hash passwords!</h3>
     <table id="table">
       <tr>
-        <th>Username &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
+        <th>Username &nbsp; &nbsp;</th>
         <th>Password</th>
       </tr>
-      <!--
-      <tr>
-        <td>{username}</td>
-        <td>{password}</td>
-      </tr>
-      -->
     </table>
     <script>
-      /*
-      *** This is an example of fetching data, I will keep this here for reference. The corresponding POST command is in server.js***
-      const username = "Suhas";
-
-      const result = fetch("/theusers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-        }),
-      });
-      */
+      const result = fetch("/list")
+        .then((response) => response.json())
+        .then((data) => {
+          var rawJSON = JSON.parse(data);
+          var table = document.getElementById("table");
+          for (var i = 0; i < rawJSON.length; i++) {
+            var row = table.insertRow(i + 1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.innerHTML = "&nbsp; &nbsp" + rawJSON[i].username;
+            cell2.innerHTML = rawJSON[i].password;
+          }
+        });
     </script>
     <button>
       <a href="index.html">Back to Home</a>
