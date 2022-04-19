@@ -27,9 +27,11 @@ app.get('/list', async(req, res) => {
 });
 
 // Authenticating a User from Login
-app.get('/auth', async(req, res) => {
+app.post('/auth', async(req, res) => {
   var user = req.body;
-  if (authenticateUser(user.username, user.password)) {
+  console.log(user);
+  const result = await authenticateUser(user.username, user.password).then(r => {console.log(r)});
+  if (result == true) {
     console.log("User authenticated");
   } else {
     console.log("User not authenticated");
@@ -68,21 +70,26 @@ async function readAtlasAll() {
   const dbo = db.db("Users");
   const c = dbo.collection("List");
   const r = await c.find({}).toArray();
+  if (r.length == 0) {
+    r.push({username: NULL, password: ""});
+  }
   return r;
 }
 
 
 async function authenticateUser(username, password) {
-  var authenticated = false;
   readAtlasUser(username).then(r => {
     if (r[0].password == password) {
-      authenticated = true;
+      console.log("User authenticated locally");
+      return true;
+      // I could just send the result of the authentication to the client straight from here, but I'm still working on it.
     } else {
-      authenticated = false;
+      console.log("User not authenticated locally");
+      return false;
     }
   }
   ).catch(err => {
-    console.log(err);
+    console.log("User not authenticated locally");
+    return false;
   });
-  return authenticated;
 } 

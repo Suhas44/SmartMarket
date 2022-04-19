@@ -28,6 +28,7 @@ const login = document.getElementById("login-form");
 login.addEventListener("submit", authenticate);
 
 async function authenticate(event) {
+    console.log("authenticating");
     event.preventDefault();
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
