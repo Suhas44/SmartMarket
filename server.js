@@ -30,12 +30,7 @@ app.get('/list', async(req, res) => {
 app.post('/auth', async(req, res) => {
   var user = req.body;
   console.log(user);
-  const result = await authenticateUser(user.username, user.password).then(r => {console.log(r)});
-  if (result == true) {
-    console.log("User authenticated");
-  } else {
-    console.log("User not authenticated");
-  }
+  const authenticated = await authenticateUser(user.username, user.password);
 });
 
 app.listen(9999, () => {
@@ -62,34 +57,16 @@ async function readAtlasUser(username) {
   const dbo = db.db("Users");
   const c = dbo.collection("List");
   const r = await c.find({"username" : username}).toArray();
-  return r;
-}
-
-async function readAtlasAll() {
-  const db = await MongoClient.connect(url);
-  const dbo = db.db("Users");
-  const c = dbo.collection("List");
-  const r = await c.find({}).toArray();
   if (r.length == 0) {
-    r.push({username: NULL, password: ""});
-  }
+    r.push({username: "", password: ""});
+  } 
   return r;
 }
-
 
 async function authenticateUser(username, password) {
-  readAtlasUser(username).then(r => {
-    if (r[0].password == password) {
-      console.log("User authenticated locally");
-      return true;
-      // I could just send the result of the authentication to the client straight from here, but I'm still working on it.
-    } else {
-      console.log("User not authenticated locally");
-      return false;
-    }
+  const result = await readAtlasUser(username).then(r => {
+    return (r[0].password == password);
   }
-  ).catch(err => {
-    console.log("User not authenticated locally");
-    return false;
-  });
+  );
+  return result;
 } 
