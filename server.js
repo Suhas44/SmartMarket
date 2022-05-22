@@ -11,10 +11,15 @@ app.use('/', express.static(path.join(__dirname, 'public/pages')));
 app.use(bodyParser.json());
 
 // Sending registering users to MongoDB
-app.post('/index', async(req, res) => {
-    console.log(req.body);
-    writeToAtlas(req.body);
-    res.json({ status: 'ok' });
+app.post('/register', async(req, res) => {
+  const duplicate = await readAtlasUser(req.body.username).then(r => {
+    if (r[0] != null) {
+      res.json({status: 'failure', message: 'Username already exists'});
+    } else {
+      writeToAtlas(req.body);
+      res.json({ status: 'success', message: 'User registered'});
+    }
+  });
 });
 
 // Loading users from MongoDB
@@ -38,10 +43,8 @@ app.listen(9999, () => {
 });
 
 async function writeToAtlas(obj) {
-    console.log("CALLED!");
     MongoClient.connect(url, function(err, db) {
       if (err) throw err;
-      console.log("Im inside now")
       var dbo = db.db("Users");
       var collection = dbo.collection("List");
       collection.insertOne(obj, function(err, res) {
@@ -52,14 +55,22 @@ async function writeToAtlas(obj) {
     });
 }
 
+async function readAtlasAll() {
+  const db = await MongoClient.connect(url);
+  const dbo = db.db("Users");
+  const c = dbo.collection("List");
+  const r = await c.find({}).toArray();
+  return r;
+}
+
 async function readAtlasUser(username) {
   const db = await MongoClient.connect(url);
   const dbo = db.db("Users");
   const c = dbo.collection("List");
   const r = await c.find({"username" : username}).toArray();
   if (r.length == 0) {
-    r.push({username: "", password: ""});
-  } 
+    r.push(null);
+  }
   return r;
 }
 

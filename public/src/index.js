@@ -7,7 +7,10 @@ async function registerUser(event) {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const result = await fetch("/index", {
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+    const result = await fetch("/register", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -16,11 +19,9 @@ async function registerUser(event) {
         username: username,
         password: password,
         }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-        console.log(data);
-        });
+    }).then((response) => response.json()).then((data) => { 
+        alert(data.message);    
+    });
 }
 
 //authentication
@@ -42,9 +43,5 @@ async function authenticate(event) {
         username: username,
         password: password,
         }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-        console.log(data);
-        });
+    }).then((response) => console.log(response.json()));
 }
