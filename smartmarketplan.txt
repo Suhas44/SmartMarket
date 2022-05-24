@@ -62,5 +62,4 @@ also be able to sell portfolios and add profit to total, also be able to sell in
 lets say portfolio: [{swn, 3, $5.60}, {aapl, 5, $121}, {tsla, 10, $40}, {swn, 8, $6.00}], and we want to sell 10 stocks of SWN currently at $7.00:
 	
 to do: 
-keep passwords only numbers and letters and @, !, #, $, %, ^, *
-passwords should be at least 4 characters long
+add loading delay?

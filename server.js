@@ -14,10 +14,10 @@ app.use(bodyParser.json());
 app.post('/register', async(req, res) => {
   const duplicate = await readAtlasUser(req.body.username).then(r => {
     if (r[0] != null) {
-      res.json({status: 'failure', message: 'Username already exists'});
+      res.json({status: false, message: 'Username already exists'});
     } else {
       writeToAtlas(req.body);
-      res.json({ status: 'success', message: 'User registered'});
+      res.json({status: true, message: 'User registered'});
     }
   });
 });
@@ -35,8 +35,25 @@ app.get('/list', async(req, res) => {
 app.post('/auth', async(req, res) => {
   var user = req.body;
   console.log(user);
-  const authenticated = await authenticateUser(user.username, user.password);
+  const authenticated = await authenticateUser(user.username, user.password).then(r => {
+    return (r) ? res.json({status: true, message: 'User authenticated'}) : res.json({status: false, message: 'User not authenticated'});
+  });
 });
+
+/*
+app.get('/transferuser', async(req, res) => {
+  const user = readAtlasUser(req.body.username).then(r => {
+    postData(r);
+  });
+});
+
+function postData(r) {
+  app.post('/loaduser', async(req, res) => {
+    console.log("sending user data");
+    res.json({username: r[0].username, password: r[0].password});
+  });
+}
+*/
 
 app.listen(9999, () => {
   console.log('Server up at port 9999');
@@ -76,8 +93,7 @@ async function readAtlasUser(username) {
 
 async function authenticateUser(username, password) {
   const result = await readAtlasUser(username).then(r => {
-    return (r[0].password == password);
-  }
-  );
+    return (r[0] != null) ? (r[0].password == password) : false;
+  });
   return result;
-} 
+};
