@@ -20,7 +20,6 @@ async function registerUser(event) {
             password: password,
             }),
         }).then((response) => response.json()).then((data) => { 
-            console.log(data.status);
             if (data.status == true) {
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
@@ -55,18 +54,7 @@ async function authenticate(event) {
             if (data.status) {
                 document.getElementById("login-username").value = "";
                 document.getElementById("login-password").value = "";
-                console.log("Transferring user data");
-                /*
-                const transferUser = fetch("/transferuser", {
-                    method: "POST",
-                    headers: {
-                    "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    }),
-                }) */
+                localStorage.setItem("username", username);
                 window.location.href = "/user.html";
             } else {
                 alert("Username or password is incorrect");

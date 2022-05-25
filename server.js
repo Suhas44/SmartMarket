@@ -40,21 +40,6 @@ app.post('/auth', async(req, res) => {
   });
 });
 
-/*
-app.get('/transferuser', async(req, res) => {
-  const user = readAtlasUser(req.body.username).then(r => {
-    postData(r);
-  });
-});
-
-function postData(r) {
-  app.post('/loaduser', async(req, res) => {
-    console.log("sending user data");
-    res.json({username: r[0].username, password: r[0].password});
-  });
-}
-*/
-
 app.listen(9999, () => {
   console.log('Server up at port 9999');
 });
