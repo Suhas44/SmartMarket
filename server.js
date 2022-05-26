@@ -16,6 +16,7 @@ app.post('/register', async(req, res) => {
     if (r[0] != null) {
       res.json({status: false, message: 'Username already exists'});
     } else {
+      req.body.portfolios = {};
       writeToAtlas(req.body);
       res.json({status: true, message: 'User registered'});
     }
@@ -36,7 +37,7 @@ app.post('/auth', async(req, res) => {
   var user = req.body;
   console.log(user);
   const authenticated = await authenticateUser(user.username, user.password).then(r => {
-    return (r) ? res.json({status: true, message: 'User authenticated'}) : res.json({status: false, message: 'User not authenticated'});
+    return (r[0]) ? res.json({status: true, message: 'User authenticated', user: r[1]}) : res.json({status: false, message: 'User not authenticated'});
   });
 });
 
@@ -77,8 +78,9 @@ async function readAtlasUser(username) {
 }
 
 async function authenticateUser(username, password) {
-  const result = await readAtlasUser(username).then(r => {
-    return (r[0] != null) ? (r[0].password == password) : false;
+  const user = await readAtlasUser(username).then(r => {
+    return r[0];
   });
-  return result;
+  const authenticated = (user != null) ? (user.password == password) : false;
+  return [authenticated, user];
 };

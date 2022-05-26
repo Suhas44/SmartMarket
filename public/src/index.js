@@ -20,11 +20,11 @@ async function registerUser(event) {
             password: password,
             }),
         }).then((response) => response.json()).then((data) => { 
-            if (data.status == true) {
+            if (data.status) {
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
-            }
-            alert(data.status) 
+            } 
+            alert(data.message);
         });
     } else {
         alert("Username and password must be at least 4 characters long and contain only letters and numbers");
@@ -55,12 +55,13 @@ async function authenticate(event) {
                 document.getElementById("login-username").value = "";
                 document.getElementById("login-password").value = "";
                 localStorage.setItem("username", username);
+                localStorage.setItem("portfolios", data.user.portfolios);
                 window.location.href = "/user.html";
             } else {
                 alert("Username or password is incorrect");
             }
         });} else {
-            alert("Username and password must be at least 4 characters long and contain only letters and numbers");
+            alert("Username and password is incorrect");
         }
 }
 
