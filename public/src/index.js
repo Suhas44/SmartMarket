@@ -54,8 +54,8 @@ async function authenticate(event) {
             if (data.status) {
                 document.getElementById("login-username").value = "";
                 document.getElementById("login-password").value = "";
-                localStorage.setItem("username", username);
-                localStorage.setItem("portfolios", data.user.portfolios);
+                sessionStorage.setItem("username", username);
+                sessionStorage.setItem("portfolios", data.user.portfolios);
                 window.location.href = "/user.html";
             } else {
                 alert("Username or password is incorrect");

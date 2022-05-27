@@ -1,2 +1,2 @@
-document.getElementById("credentials").innerHTML = "Welcome " + localStorage.getItem("username");
-document.getElementById("portfolios").innerHTML = localStorage.getItem("portfolios");
+document.getElementById("credentials").innerHTML = "Welcome " + sessionStorage.getItem("username");
+document.getElementById("portfolios").innerHTML = sessionStorage.getItem("portfolios");
