@@ -37,6 +37,7 @@ login.addEventListener("submit", authenticate);
 
 async function authenticate(event) {
     event.preventDefault();
+    document.getElementById("loader").style.visibility = "visible";
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
     
@@ -60,9 +61,10 @@ async function authenticate(event) {
             } else {
                 alert("Username or password is incorrect");
             }
-        });} else {
+        })} else {
             alert("Username and password is incorrect");
         }
+        document.getElementById("loader").style.visibility = "hidden";
 }
 
 function credentialRestrictions(username, password) {

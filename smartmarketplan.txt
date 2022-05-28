@@ -20,19 +20,19 @@ return earnings
 signup: after succesful sign up, create mongo collection {id (manadatory), username, hashed password??} you can add portfolio field later: https://www.mongodb.com/docs/manual/reference/operator/aggregation/addFields/
 check this for reference: https://kb.objectrocket.com/mongo-db/mongodb-null-or-empty-a-look-at-some-edge-cases-for-mongodb-and-how-to-query-for-them-470
 
-home page: welcome, {username}! in the top right -- smartmarket.com/{username-hash}
+home page: welcome, {username}! in the top right -- smartmarket.com/user
 display total earnings (number and percent) across ALL Portfolios
 have a table of portfolios and their expenditures and gains and percent gains in separate columns (be able to sort this)
 hyperlink the portfolio name that will link to in depth stats of each portfolio (portfolio pages)
 have a create portfolio button, green with a "+" symbol on it (creating pages)
 
-portfolio pages: the hyperlink will send filters(user: {user}, portfolio: {portfolioname}) to mongo to dynamically create the webpage smartmarket.com/{username-hash}/portfolios
+portfolio pages: the hyperlink will send filters(user: {user}, portfolio: {portfolioname}) to mongo to dynamically create the webpage smartmarket.com/user/portfolios
 display total earnings (number and percent) across the Portfolios
 load a stock api graph from date - current date  of HISTORICAL performance of the portfolio (chart.js)? (get portfolio value at different times and chart that vs then-expenditure)- do last
 have each stock ENTRY (i.e. ticker packets bought on different dates should not be aggregated) and show expenditure gains and percents (be able to sort this)
 hyperlink each entry 
 
-entry page: smartmarket.com/{username-hash}/portfolios
+entry page: smartmarket.com/user/portfolios
 an entry is just a packet {ticker, sharenum, shareprice, date}
 display total earnings (number and percent) BIG!
 load a stock api graph from date - current date  of ticker performance
@@ -40,14 +40,14 @@ On {date}, you bought {sharenum} shares of {ticker} at ${shareprice} per share
 You have gained/lost {(marketprice(ticker) * sharenum) - (shareprice * sharenum)} on this investment
 
 
-create page: smartmarket.com/{username-hash}/create
+create page: smartmarket.com/user/create
 name your portfolio
 
 have a button to add stocks, which triggers a search bar for stock tickers, after one is selected have a field for share number, after the user confirms the number of shares, add that to a current log (with ticker, sharenum, shareprice) in a table, with the button to add underneath
 display current total current expenditure at the top
 have a submit portfolio button, this should add a new portfolio list in mongodb
 
-delete a portfolio: smartmarket.com/{username-hash}/delete
+delete a portfolio: smartmarket.com/user/delete
 select a portfolio and have a delete button, re enter password to verify, and remove that portfolio from mongo
 
 do balance -- withdrawal last
