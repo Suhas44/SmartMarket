@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
+var request = require("request");
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://MongoTest:MongoTester1@cluster0.5oqhq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -38,6 +39,18 @@ app.post('/auth', async(req, res) => {
   console.log(user);
   const authenticated = await authenticateUser(user.username, user.password).then(r => {
     return (r[0]) ? res.json({status: true, message: 'User authenticated', user: r[1]}) : res.json({status: false, message: 'User not authenticated'});
+  });
+});
+
+// Loading users from MongoDB
+app.get('/search', async(req, res) => {
+  console.log("Searching server");
+  var ticker = req.query.ticker;
+  await getStockPrice(ticker).then(r => {
+    console.log(r);
+    res.json(r);
+  }).catch(err => {
+    console.log(err);
   });
 });
 
@@ -84,3 +97,13 @@ async function authenticateUser(username, password) {
   const authenticated = (user != null) ? (user.password == password) : false;
   return [authenticated, user];
 };
+
+async function getStockPrice(symbol) {
+    var url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.API_KEY}`;
+    return request.get(
+        {url: url, json: true, headers: { "User-Agent": "request" }},
+        (err, res, data) => {
+            return (err || res.statusCode != 200) ? ("There has been an error") : ((data["Global Quote"]["05. price"] != undefined) ? (data["Global Quote"]["05. price"]) : (`${symbol} is not a valid ticker`));
+        }
+    );
+}
