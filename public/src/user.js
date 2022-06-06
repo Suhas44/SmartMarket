@@ -3,7 +3,7 @@ if (sessionStorage.getItem("username") == null) {
 }
 
 document.getElementById("username").innerHTML = "Welcome " + sessionStorage.getItem("username");
-document.getElementById("portfolios").innerHTML = sessionStorage.getItem("portfolios");
+document.getElementById("portfolios").innerHTML = sessionStorage.getItem("user");
 document.getElementById("logout").addEventListener("click", () => {
     sessionStorage.removeItem("username");
     sessionStorage.removeItem("portfolios");

@@ -52,12 +52,11 @@ select a portfolio and have a delete button, re enter password to verify, and re
 
 do balance -- withdrawal last
 
-store jwt token as user browses through website, if a user doen't have a valid token (i.e. isn't logged in), they will be redirected to the login page -- https://stackoverflow.com/questions/35100181/how-to-make-login-authentication-page-in-html-or-javascript
+store session token as user browses through website, if a user doen't have a valid token (i.e. isn't logged in), they will be redirected to the login page
 
 also be able to sell portfolios and add profit to total, also be able to sell individual stocks in a portfolio, with status of sold portfolios or stocks in the table as SOLD in red, or ACTIVE in green
 
 lets say portfolio: [{swn, 3, $5.60}, {aapl, 5, $121}, {tsla, 10, $40}, {swn, 8, $6.00}], and we want to sell 10 stocks of SWN currently at $7.00:
 	
 to do: 
-get stock information
 hash passwords

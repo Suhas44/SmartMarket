@@ -56,7 +56,7 @@ async function authenticate(event) {
                 document.getElementById("login-username").value = "";
                 document.getElementById("login-password").value = "";
                 sessionStorage.setItem("username", username);
-                sessionStorage.setItem("portfolios", data.user.portfolios);
+                sessionStorage.setItem("user", JSON.stringify(data.user));
                 window.location.href = "/user.html";
             } else {
                 alert("Username or password is incorrect");

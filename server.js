@@ -52,6 +52,13 @@ app.post('/search', async(req, res) => {
   });
 });
 
+app.post('/update', async(req, res) => {
+  const user = req.body;
+  const updated = await updateAtlas(user).then(r => {
+    res.json({status: true, message: 'User updated'});
+  }).catch(err => {res.json({status: false, message: 'An error has occured'});});
+});
+
 app.listen(9999, () => {
   console.log('Server up at port 9999');
 });
@@ -88,6 +95,15 @@ async function readAtlasUser(username) {
   return r;
 }
 
+async function updateAtlas(client) {
+  const db = await MongoClient.connect(url);
+  const dbo = db.db("Users");
+  const c = dbo.collection("List");
+  const r = await c.updateOne({"username" : client.user.username}, {$set: {portfolios : client.user.portfolios}}).then(r => {console.log("Updated Portfolio")});
+  console.log(JSON.stringify(client.user.portfolios));
+  return r;
+}
+
 async function authenticateUser(username, password) {
   const user = await readAtlasUser(username).then(r => {
     return r[0];
@@ -97,7 +113,7 @@ async function authenticateUser(username, password) {
 };
 
 async function getStockPrice(symbol) {
-  return new Promise ((resolve, reject)=>{
+  return new Promise ((resolve) => {
     var query = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.API_KEY}`;
     request.get(
       {url: query, json: true, headers: { "User-Agent": "request" }},
