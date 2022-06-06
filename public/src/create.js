@@ -1,10 +1,10 @@
-document.getElementById("submit").addEventListener("submit", searchTicker);
+const tickerform = document.getElementById("ticker-form");
+tickerform.addEventListener("submit", searchTicker);
 
 async function searchTicker(event) {
-    console.log("searching create")
     event.preventDefault();
     const ticker = document.getElementById("ticker").value;
-    const result = await fetch("/search", {
+    const result = await fetch('/search', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -15,6 +15,5 @@ async function searchTicker(event) {
     }).then((response) => response.json()).then((data) => {
             document.getElementById("ticker").value = "";
             document.getElementById("price").innerHTML = data;
-            console.log(data);
         });
 }

@@ -43,11 +43,9 @@ app.post('/auth', async(req, res) => {
 });
 
 // Loading users from MongoDB
-app.get('/search', async(req, res) => {
-  console.log("Searching server");
-  var ticker = req.query.ticker;
+app.post('/search', async(req, res) => {
+  var ticker = req.body.ticker;
   await getStockPrice(ticker).then(r => {
-    console.log(r);
     res.json(r);
   }).catch(err => {
     console.log(err);
@@ -99,11 +97,13 @@ async function authenticateUser(username, password) {
 };
 
 async function getStockPrice(symbol) {
-    var url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.API_KEY}`;
-    return request.get(
-        {url: url, json: true, headers: { "User-Agent": "request" }},
-        (err, res, data) => {
-            return (err || res.statusCode != 200) ? ("There has been an error") : ((data["Global Quote"]["05. price"] != undefined) ? (data["Global Quote"]["05. price"]) : (`${symbol} is not a valid ticker`));
-        }
+  return new Promise ((resolve, reject)=>{
+    var query = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.API_KEY}`;
+    request.get(
+      {url: query, json: true, headers: { "User-Agent": "request" }},
+      (err, res, data) => {
+          resolve ((err || res.statusCode != 200) ? ("There has been an error") : ((data["Global Quote"]["05. price"] != undefined) ? (data["Global Quote"]["05. price"]) : (`${symbol} is not a valid ticker`)));
+      }
     );
+  });
 }
