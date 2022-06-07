@@ -24,15 +24,6 @@ app.post('/register', async(req, res) => {
   });
 });
 
-// Loading users from MongoDB
-app.get('/list', async(req, res) => {
-  readAtlasAll().then(r => {
-    res.json(JSON.stringify(r));
-   }).catch(err => {
-     console.log(err);
-   });
-});
-
 // Authenticating a User from Login
 app.post('/auth', async(req, res) => {
   var user = req.body;
@@ -74,14 +65,6 @@ async function writeToAtlas(obj) {
         db.close();
       });
     });
-}
-
-async function readAtlasAll() {
-  const db = await MongoClient.connect(url);
-  const dbo = db.db("Users");
-  const c = dbo.collection("List");
-  const r = await c.find({}).toArray();
-  return r;
 }
 
 async function readAtlasUser(username) {
