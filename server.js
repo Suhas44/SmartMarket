@@ -27,7 +27,6 @@ app.post('/register', async(req, res) => {
 // Authenticating a User from Login
 app.post('/auth', async(req, res) => {
   var user = req.body;
-  console.log(user);
   const authenticated = await authenticateUser(user.username, user.password).then(r => {
     return (r[0]) ? res.json({status: true, message: 'User authenticated', user: r[1]}) : res.json({status: false, message: 'User not authenticated'});
   });
@@ -39,6 +38,7 @@ app.post('/search', async(req, res) => {
   await getStockPrice(ticker).then(r => {
     res.json(r);
   }).catch(err => {
+    console.log("AN ERROR OCCURRED");
     console.log(err);
   });
 });
@@ -83,7 +83,6 @@ async function updateAtlas(client) {
   const dbo = db.db("Users");
   const c = dbo.collection("List");
   const r = await c.updateOne({"username" : client.user.username}, {$set: {portfolios : client.user.portfolios}}).then(r => {console.log("Updated Portfolio")});
-  console.log(JSON.stringify(client.user.portfolios));
   return r;
 }
 

@@ -25,7 +25,6 @@ async function searchTicker(event) {
             let user = JSON.parse(sessionStorage.getItem("user"));
             (user.portfolios[portfolioname] == undefined) ? user.portfolios[portfolioname] = [packet] : user.portfolios[portfolioname].push(packet);
             sessionStorage.setItem("user", JSON.stringify(user));
-            console.log(JSON.parse(sessionStorage.getItem("user")));
             document.getElementById("ticker").value = "";
             document.getElementById("sharenumber").value = "";
             document.getElementById("portfolioname").value = "";
@@ -37,7 +36,6 @@ update.addEventListener("submit", updatePortfolio);
 
 async function updatePortfolio(event) {
     event.preventDefault();
-    console.log("Updating portfolio...");
     let user = JSON.parse(sessionStorage.getItem("user"));
     const update = await fetch('/update', {
         method: "POST",
