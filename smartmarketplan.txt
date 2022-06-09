@@ -59,4 +59,8 @@ also be able to sell portfolios and add profit to total, also be able to sell in
 lets say portfolio: [{swn, 3, $5.60}, {aapl, 5, $121}, {tsla, 10, $40}, {swn, 8, $6.00}], and we want to sell 10 stocks of SWN currently at $7.00:
 	
 to do: 
+add empty field handling for names, sharenumbers, and tickers
+to add stocks to a portfolio have an add button in portfolio.html, where users can view the price of the stock before they add it to the portfolio
+add delete and sell buttons to portfolio.html to every stock entry, and have a button to sell all stocks in the portfolio. Sold stocks will be displayed at the bottom of the page, before they delete and sell, add an alert saying are you sure?
+to add a new portfolio, add a button in user.js -> redirect to a page where you can name the portfolio and make it the "viewingPortfolio" in sessionStorage, add an Empty portfolio to mongo -> redirect to that portfolio page in portfolio.html
 hash passwords

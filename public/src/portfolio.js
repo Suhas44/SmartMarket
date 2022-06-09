@@ -26,7 +26,7 @@ async function load() {
                 (sessionStorage.getItem("profit") == undefined) ? sessionStorage.setItem("profit", (currenttotal - packet.total).toFixed(2)) : sessionStorage.setItem("profit", Number(sessionStorage.getItem("profit")) + Number(currenttotal - packet.total));
         });
     }
-    document.getElementById("table").innerHTML += "<tr><td>" + "Total" + "</td><td>" + "</td><td>" + "</td><td>" + "$" + sessionStorage.getItem("total") + "</td><td>" + "</td><td>" + "</td><td>" + "$" + (Number(sessionStorage.getItem("currenttotal"))).toFixed(2) + "</td><td>" + calcPc(Number(sessionStorage.getItem("total")), Number(sessionStorage.getItem("currenttotal"))) + "</td><td>" + "$" + (Number(sessionStorage.getItem("profit"))).toFixed(2);  
+    document.getElementById("table").innerHTML += "<tr><td>" + "Total" + "</td><td>" + "</td><td>" + "</td><td>" + "$" + (Number(sessionStorage.getItem("total"))).toFixed(2) + "</td><td>" + "</td><td>" + "</td><td>" + "$" + (Number(sessionStorage.getItem("currenttotal"))).toFixed(2) + "</td><td>" + calcPc(Number(sessionStorage.getItem("total")), Number(sessionStorage.getItem("currenttotal"))) + "</td><td>" + "$" + (Number(sessionStorage.getItem("profit"))).toFixed(2);  
     sessionStorage.removeItem("total");
     sessionStorage.removeItem("currenttotal");
     sessionStorage.removeItem("profit");
@@ -37,3 +37,75 @@ function calcPc(n1,n2){
 }
 
 load();
+sessionStorage.setItem("viewingTicker", JSON.stringify([null]));
+
+const tickerform = document.getElementById("ticker-form");
+tickerform.addEventListener("submit", preview);
+
+async function preview(event) {
+    if (document.getElementById("ticker").value == "" || document.getElementById("sharenumber").value == "") {
+        alert("Please enter a ticker");
+        return;
+    }
+    event.preventDefault();
+    await searchTicker().then((data) => {
+        document.getElementById("price").innerHTML += "$" + data;
+        sessionStorage.setItem("viewingTicker", JSON.stringify([document.getElementById("ticker").value.toUpperCase(), data]));
+    });
+}
+
+const addform = document.getElementById("add");
+addform.addEventListener("submit", add);
+
+async function add(event) {
+    event.preventDefault();
+    if (document.getElementById("ticker").value == "" || document.getElementById("sharenumber").value == "") {
+        alert("Please enter a ticker");
+        return;
+    }
+        
+    (JSON.parse(sessionStorage.getItem("viewingTicker"))[0] !== document.getElementById("ticker").value.toUpperCase()) ? (ticker = document.getElementById("ticker").value.toUpperCase(), price = await searchTicker(ticker).then((data) => { return data})) : (ticker = JSON.parse(sessionStorage.getItem("viewingTicker"))[0], price = Number(JSON.parse(sessionStorage.getItem("viewingTicker"))[1]).toFixed(2));
+    let sharenumber = document.getElementById("sharenumber").value;
+    let portfolioname = sessionStorage.getItem("viewingPortfolio");
+    document.getElementById("price").innerHTML = sharenumber + " shares of " + ticker + " at " + "$" + price + " have been added to " +  portfolioname + " for a total of $" + (price * sharenumber).toFixed(2);
+    price = Number(price).toFixed(2);
+    let packet = {ticker, sharenumber, price, total: (sharenumber * price).toFixed(2), date: new Date()}
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    (user.portfolios[portfolioname] == undefined) ? user.portfolios[portfolioname] = [packet] : user.portfolios[portfolioname].push(packet);
+    sessionStorage.setItem("user", JSON.stringify(user));
+    document.getElementById("ticker").value = "";
+    document.getElementById("sharenumber").value = "";
+    updatePortfolio(); 
+}
+
+async function searchTicker() {
+    let ticker = document.getElementById("ticker").value.toUpperCase();
+    const result = await fetch('/search', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            ticker: ticker,
+        }),
+    }).then((response) => response.json()).then((price) => {
+        return price;
+    }
+    );
+    return result;
+}
+
+async function updatePortfolio() {
+    let user = JSON.parse(sessionStorage.getItem("user"));
+    const update = await fetch('/update', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            user: user,
+        }),
+    }).then((response) => response.json()).then((data) => {
+        console.log(data.message);
+    });
+}
