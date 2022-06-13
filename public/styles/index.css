@@ -1,15 +1,4 @@
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 300;
-    src: local("Open Sans Light"), local("OpenSans-Light"),
-      url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff)
-        format("woff");
-}
-
-body {
-    font-family: "Open Sans";
-}
+@import "fonts.css";
 
 h1, h3, #reg-form, #login-form, #sneaky {
     text-align: center;

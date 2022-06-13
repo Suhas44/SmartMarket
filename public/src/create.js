@@ -7,6 +7,10 @@ document.getElementById("portfolio-form").addEventListener("submit", addToPortfo
 async function addToPortfolio(event) {
     event.preventDefault();
     const name = document.getElementById("portfolioname").value;
+    if (name == "") {
+        alert("Please enter a name for your portfolio");
+        return;
+    }
     let user = JSON.parse(sessionStorage.getItem("user"));
     if (user.portfolios[name] == undefined) {
         user.portfolios[name] = [];

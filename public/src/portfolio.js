@@ -43,14 +43,21 @@ const tickerform = document.getElementById("ticker-form");
 tickerform.addEventListener("submit", preview);
 
 async function preview(event) {
-    if (document.getElementById("ticker").value == "" || document.getElementById("sharenumber").value == "") {
-        alert("Please enter a ticker");
-        return;
-    }
     event.preventDefault();
+    let ticker = document.getElementById("ticker").value.toUpperCase();
+    let sharenumber = document.getElementById("sharenumber").value;
+    if (ticker == "") {
+        alert("Please enter a ticker");
+        return false;
+    }
+    if (sharenumber == "") {
+        alert("Please enter a quantity");
+        return false;
+    }
     await searchTicker().then((data) => {
-        document.getElementById("price").innerHTML += "$" + data;
-        sessionStorage.setItem("viewingTicker", JSON.stringify([document.getElementById("ticker").value.toUpperCase(), data]));
+        price = Number(data).toFixed(2)
+        document.getElementById("price").innerHTML += ticker + "is priced at $" + price + " per share. <br>" + "Do you want to add " + sharenumber + " shares of SWN for a total of $" + (Number(sharenumber) * Number(price)).toFixed(2) + "?";    
+        sessionStorage.setItem("viewingTicker", JSON.stringify([ticker, data]));
     });
 }
 
@@ -58,17 +65,23 @@ const addform = document.getElementById("add");
 addform.addEventListener("submit", add);
 
 async function add(event) {
+    let ticker = document.getElementById("ticker").value.toUpperCase();
+    let sharenumber = document.getElementById("sharenumber").value;
     event.preventDefault();
-    if (document.getElementById("ticker").value == "" || document.getElementById("sharenumber").value == "") {
+    if (ticker == "") {
         alert("Please enter a ticker");
         return;
     }
+
+    if (sharenumber == "") {
+        alert("Please enter a quantity");
+        return;
+    }
         
-    (JSON.parse(sessionStorage.getItem("viewingTicker"))[0] !== document.getElementById("ticker").value.toUpperCase()) ? (ticker = document.getElementById("ticker").value.toUpperCase(), price = await searchTicker(ticker).then((data) => { return data})) : (ticker = JSON.parse(sessionStorage.getItem("viewingTicker"))[0], price = Number(JSON.parse(sessionStorage.getItem("viewingTicker"))[1]).toFixed(2));
-    let sharenumber = document.getElementById("sharenumber").value;
+    (JSON.parse(sessionStorage.getItem("viewingTicker"))[0] !== ticker) ? (ticker = ticker.toUpperCase(), price = await searchTicker(ticker).then((data) => {return data})) : (ticker = JSON.parse(sessionStorage.getItem("viewingTicker"))[0], price = Number(JSON.parse(sessionStorage.getItem("viewingTicker"))[1]).toFixed(2));
+    price = Number(price).toFixed(2);
     let portfolioname = sessionStorage.getItem("viewingPortfolio");
     document.getElementById("price").innerHTML = sharenumber + " shares of " + ticker + " at " + "$" + price + " have been added to " +  portfolioname + " for a total of $" + (price * sharenumber).toFixed(2);
-    price = Number(price).toFixed(2);
     let packet = {ticker, sharenumber, price, total: (sharenumber * price).toFixed(2), date: new Date()}
     let user = JSON.parse(sessionStorage.getItem("user"));
     (user.portfolios[portfolioname] == undefined) ? user.portfolios[portfolioname] = [packet] : user.portfolios[portfolioname].push(packet);

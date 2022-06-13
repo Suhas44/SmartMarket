@@ -2,7 +2,7 @@ if (sessionStorage.getItem("username") == null) {
     window.location.href = "/index.html";
 }
 
-document.getElementById("username").innerHTML = "Welcome " + sessionStorage.getItem("username");
+document.getElementById("username").innerHTML = "Welcome " + sessionStorage.getItem("username") + "!";
 document.getElementById("portfolios").innerHTML = makePortfoliosButtons(JSON.parse(sessionStorage.getItem("user")).portfolios);
 document.getElementById("logout").addEventListener("click", () => {
     sessionStorage.removeItem("username");
@@ -10,11 +10,15 @@ document.getElementById("logout").addEventListener("click", () => {
 });
 
 function makePortfoliosButtons(portfolios) {
-    let html = "";
-    for (let key in portfolios) {
-        html += "<button class='portfolio-button'>" + key + "</button> &nbsp; &nbsp;";
-    }
-    return html + "<br> <br>";
+  if (Object.keys(portfolios).length == 0) {
+    document.getElementById("header").innerHTML = "It looks like you have no portfolios!";
+    return "";
+  }
+  let html = "";
+  for (let key in portfolios) {
+      html += "<button class='portfolio-button'>" + key + "</button> &nbsp; &nbsp;";
+  }
+  return html + "<br> <br>";
 }
 
 const buttons = document.querySelectorAll('.portfolio-button');
