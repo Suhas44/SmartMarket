@@ -60,4 +60,5 @@ lets say portfolio: [{swn, 3, $5.60}, {aapl, 5, $121}, {tsla, 10, $40}, {swn, 8,
 	
 to do: 
 add delete and sell buttons to portfolio.html to every stock entry, and have a button to sell all stocks in the portfolio. Sold stocks will be displayed at the bottom of the page, before they delete and sell, add an alert saying are you sure?
+loading screens for portfolios
 hash passwords

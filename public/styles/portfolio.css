@@ -1,0 +1,6 @@
+@import "fonts.css";
+
+table, th, td {
+      border: 0.8px solid black;
+      border-collapse: collapse;
+}

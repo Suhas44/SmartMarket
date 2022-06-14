@@ -1,6 +1,6 @@
 @import "fonts.css";
 
-h1, h3, #reg-form, #login-form, #sneaky {
+h1, h3, #reg-form, #login-form {
     text-align: center;
 }
 
@@ -8,7 +8,6 @@ h1, h3, #reg-form, #login-form, #sneaky {
     margin-bottom: 100px;
 }
 
-/* Center the loader */
 #loader {
     position: absolute;
     left: 50%;
@@ -35,7 +34,6 @@ h1, h3, #reg-form, #login-form, #sneaky {
     100% { transform: rotate(360deg); }
   }
   
-  /* Add animation to "page content" */
   .animate-bottom {
     position: relative;
     -webkit-animation-name: animatebottom;
