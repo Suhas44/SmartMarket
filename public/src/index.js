@@ -62,7 +62,7 @@ async function authenticate(event) {
                 alert("Username or password is incorrect");
             }
         })} else {
-            alert("Username and password is incorrect");
+            alert("Username or password do not meet requirements");
         }
         document.getElementById("loader").style.visibility = "hidden";
 }

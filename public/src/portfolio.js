@@ -1,17 +1,19 @@
-if (sessionStorage.getItem("username") == null || sessionStorage.getItem("viewingPortfolio") == null) {
-    window.location.href = "/index.html";
+if (sessionStorage.getItem("viewingPortfolio") == null) {
+    window.location.href = "/user.html";
 }
 
 document.getElementById("header").innerHTML += " " + "<b>" + sessionStorage.getItem("viewingPortfolio");
 let portfolio = JSON.parse(sessionStorage.getItem("user")).portfolios[sessionStorage.getItem("viewingPortfolio")];
+let active = portfolio.active;
+let sold = portfolio.sold;
 async function load() {
-    if (Object.keys(portfolio).length == 0) {
+    if ((active.length == 0) && (sold.length == 0)) {
         document.getElementById("table").innerHTML += "<tr><td>No shares added yet</td>";       
         return;
     }
     var index = 0;
-    for (let key in portfolio) {
-        let packet = portfolio[key];
+    for (let key in active) {
+        let packet = active[key];
         const result = await fetch('/search', {
             method: "POST",
             headers: {
@@ -48,6 +50,7 @@ function calcPc(n1,n2){
 }
 
 load();
+
 sessionStorage.setItem("viewingTicker", JSON.stringify([null]));
 
 const tickerform = document.getElementById("ticker-form");
@@ -67,7 +70,7 @@ async function preview(event) {
     }
     await searchTicker().then((data) => {
         price = Number(data).toFixed(2)
-        document.getElementById("price").innerHTML += ticker + "is priced at $" + price + " per share. <br>" + "Do you want to add " + sharenumber + " shares of SWN for a total of $" + (Number(sharenumber) * Number(price)).toFixed(2) + "?";    
+        document.getElementById("price").innerHTML += ticker + " is priced at $" + price + " per share. <br>" + "Do you want to add " + sharenumber + " shares of SWN for a total of $" + (Number(sharenumber) * Number(price)).toFixed(2) + "?";    
         sessionStorage.setItem("viewingTicker", JSON.stringify([ticker, data]));
     });
 }
@@ -95,12 +98,12 @@ async function add(event) {
     document.getElementById("price").innerHTML = sharenumber + " shares of " + ticker + " at " + "$" + price + " have been added to " +  portfolioname + " for a total of $" + (price * sharenumber).toFixed(2);
     let packet = {ticker, sharenumber, price, total: (sharenumber * price).toFixed(2), date: new Date()}
     let user = JSON.parse(sessionStorage.getItem("user"));
-    (user.portfolios[portfolioname] == undefined) ? user.portfolios[portfolioname] = [packet] : user.portfolios[portfolioname].push(packet);
+    user.portfolios[portfolioname].active.push(packet); 
     sessionStorage.setItem("user", JSON.stringify(user));
     document.getElementById("ticker").value = "";
     document.getElementById("sharenumber").value = "";
     updatePortfolio(); 
-}
+} 
 
 async function searchTicker() {
     let ticker = document.getElementById("ticker").value.toUpperCase();

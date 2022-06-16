@@ -13,7 +13,7 @@ async function addToPortfolio(event) {
     }
     let user = JSON.parse(sessionStorage.getItem("user"));
     if (user.portfolios[name] == undefined) {
-        user.portfolios[name] = [];
+        user.portfolios[name] = {active: [], sold: []};
     } else {
         alert("Portfolio already exists");
         return;
