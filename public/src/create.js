@@ -27,9 +27,7 @@ async function addToPortfolio(event) {
             user: user,
         }),
     }).then((response) => response.json()).then((data) => {
-        console.log(data.message);
+        sessionStorage.setItem("viewingPortfolio", name);
+        window.location.href = "/portfolio.html";
     });
-
-    sessionStorage.setItem("viewingPortfolio", name);
-    window.location.href = "/portfolio.html";
 }

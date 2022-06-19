@@ -59,6 +59,9 @@ also be able to sell portfolios and add profit to total, also be able to sell in
 lets say portfolio: [{swn, 3, $5.60}, {aapl, 5, $121}, {tsla, 10, $40}, {swn, 8, $6.00}], and we want to sell 10 stocks of SWN currently at $7.00:
 	
 to do: 
-add delete and sell buttons to portfolio.html to every stock entry, and have a button to sell all stocks in the portfolio. Sold stocks will be displayed at the bottom of the page, before they delete and sell, add an alert saying are you sure?
+delete all console.logs and comments
+make efficient where possible
+hide api key
+make a new database for this project
 loading screens for portfolios
 hash passwords

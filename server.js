@@ -95,7 +95,6 @@ async function authenticateUser(username, password) {
 };
 
 async function getStockPrice(symbol) {
-  /*
   return new Promise ((resolve) => {
     var query = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.API_KEY}`;
     request.get(
@@ -104,6 +103,5 @@ async function getStockPrice(symbol) {
           resolve ((err || res.statusCode != 200) ? ("There has been an error") : ((data["Global Quote"]["05. price"] != undefined) ? (data["Global Quote"]["05. price"]) : (`${symbol} is not a valid ticker`)));
       }
     );
-  }); */
-  return 4;
+  });
 }

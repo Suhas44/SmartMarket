@@ -8,6 +8,8 @@
   </head>
   <body>
     <p id="header">You are currently viewing</p>
+    <h2 id="profitheader">Your current profit for this portfolio is $</h2>
+    <h3>Active Shares</h3>
     <table id="table">
       <tr>
         <th>Stock</th>
@@ -24,6 +26,7 @@
       </tr>
     </table>
     <br />
+    <br />
     <form id="ticker-form">
       <input type="text" id="ticker" placeholder="Enter ticker" />
       <input type="text" id="sharenumber" placeholder="Enter share number" />
@@ -33,6 +36,23 @@
     <form id="add">
       <input type="submit" value="Add to Portfolio" />
     </form>
+    <br />
+    <br />
+    <h3 id="soldheader">Sold Shares</h3>
+    <table id="sold">
+      <tr>
+        <th>Stock</th>
+        <th>Quantity</th>
+        <th>Share Price</th>
+        <th>Total</th>
+        <th>Date</th>
+        <th>Sold Price</th>
+        <th>Sold Total</th>
+        <th>Gain</th>
+        <th>Profit</th>
+      </tr>
+    </table>
+    <br />
     <button>
       <a href="user.html">Back</a>
     </button>
