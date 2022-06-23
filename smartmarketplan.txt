@@ -65,3 +65,7 @@ hide api key
 make a new database for this project
 loading screens for portfolios
 hash passwords
+handling if it's not a ticker
+add green/red for gain/losses
+partial packet sells
+connect mongo once at the beginning

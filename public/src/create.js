@@ -18,6 +18,7 @@ async function addToPortfolio(event) {
         alert("Portfolio already exists");
         return;
     }
+    sessionStorage.setItem("user", JSON.stringify(user));
     const update = await fetch('/update', {
         method: "POST",
         headers: {

@@ -44,6 +44,9 @@ async function load() {
         sessionStorage.removeItem("total");
         sessionStorage.removeItem("currenttotal");
         sessionStorage.removeItem("profit");
+        if (!isSold) { 
+            document.getElementById("profitheader").innerHTML += Number(sessionStorage.getItem("allProfit"));
+        }
     } else {
         document.getElementById("table").innerHTML += "<tr><td>No active shares</td>";
     }
@@ -53,7 +56,7 @@ async function load() {
             let packet = sold[key];
             let date = new Date(packet.date);
             let dateString = (date.getMonth() + 1) + "/" +  date.getDate() + "/" + date.getFullYear(); 
-            document.getElementById("sold").innerHTML += "<tr><td>" + packet.ticker + "</td><td>" + packet.sharenumber + "</td><td>" + "$"+packet.price + "</td><td>" + "$"+packet.total + "</td><td>" + dateString + "</td><td>" + "$"+packet.soldprice + "</td><td>" + "$"+packet.soldtotal + "</td><td>" + packet.gain + "%" +"</td><td>" + "$" + packet.profit;
+            document.getElementById("sold").innerHTML += "<tr><td>" + packet.ticker + "</td><td>" + packet.sharenumber + "</td><td>" + "$"+packet.price + "</td><td>" + "$"+packet.total + "</td><td>" + dateString + "</td><td>" + "$"+packet.soldprice + "</td><td>" + "$"+packet.soldtotal + "</td><td>" + packet.gain + "%" +"</td><td>" + "$" + packet.profit.toFixed(2);
             (sessionStorage.getItem("total") == undefined) ? sessionStorage.setItem("total", packet.total) : sessionStorage.setItem("total", Number(sessionStorage.getItem("total")) + Number(packet.total));
             (sessionStorage.getItem("currenttotal") == undefined) ? sessionStorage.setItem("currenttotal", packet.soldtotal) : sessionStorage.setItem("currenttotal", Number(sessionStorage.getItem("currenttotal")) + Number(packet.soldtotal));
             (sessionStorage.getItem("profit") == undefined) ? sessionStorage.setItem("profit", packet.profit) : sessionStorage.setItem("profit", Number(sessionStorage.getItem("profit")) + Number(packet.profit));
@@ -95,7 +98,7 @@ async function preview(event) {
     }
     await searchTicker().then((data) => {
         price = Number(data).toFixed(2)
-        document.getElementById("price").innerHTML += ticker + " is priced at $" + price + " per share. <br>" + "Do you want to add " + sharenumber + " shares of SWN for a total of $" + (Number(sharenumber) * Number(price)).toFixed(2) + "?";    
+        document.getElementById("price").innerHTML += ticker + " is priced at $" + price + " per share. <br>" + "Do you want to add " + sharenumber + " shares of " + ticker + " for a total of $" + (Number(sharenumber) * Number(price)).toFixed(2) + "?";    
         sessionStorage.setItem("viewingTicker", JSON.stringify([ticker, data]));
     });
 }
